@@ -1,5 +1,5 @@
 from typing import Dict, Type
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 
 @dataclass
@@ -12,11 +12,12 @@ class InfoMessage:
     calories: float
 
     def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type}; '
-                f'Длительность: {self.duration:.3f} ч.; '
-                f'Дистанция: {self.distance:.3f} км; '
-                f'Ср. скорость: {self.speed:.3f} км/ч; '
-                f'Потрачено ккал: {self.calories:.3f}.')
+        TEMPLATE: str = ('Тип тренировки: {}; '
+                         'Длительность: {:.3f} ч.; '
+                         'Дистанция: {:.3f} км; '
+                         'Ср. скорость: {:.3f} км/ч; '
+                         'Потрачено ккал: {:.3f}.')
+        return TEMPLATE.format(*asdict(self).values())
 
 
 class Training:
@@ -122,7 +123,7 @@ def read_package(workout_type: str, data: list) -> Training:
         return training_type
     else:
         print(f'Ошибка. Тренировка {workout_type} не найдена.')
-        quit()
+        return None
 
 
 def main(training: Training) -> None:
@@ -133,10 +134,11 @@ def main(training: Training) -> None:
 
 if __name__ == '__main__':
 
-    packages = [('SWM', [720, 1, 80, 25, 40]),
+    packages = [('SW', [720, 1, 80, 25, 40]),
                 ('RUN', [15000, 1, 75]),
                 ('WLK', [9000, 1, 75, 180])]
 
     for workout_type, data in packages:
         training = read_package(workout_type, data)
-        main(training)
+        if training != None:
+            main(training)
