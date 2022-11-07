@@ -12,12 +12,12 @@ class InfoMessage:
     calories: float
 
     def get_message(self) -> str:
-        TEMPLATE: str = ('Тип тренировки: {}; '
-                         'Длительность: {:.3f} ч.; '
-                         'Дистанция: {:.3f} км; '
-                         'Ср. скорость: {:.3f} км/ч; '
-                         'Потрачено ккал: {:.3f}.')
-        return TEMPLATE.format(*asdict(self).values())
+        TEMPLATE: str = ('Тип тренировки: {training_type}; '
+                         'Длительность: {duration:.3f} ч.; '
+                         'Дистанция: {distance:.3f} км; '
+                         'Ср. скорость: {speed:.3f} км/ч; '
+                         'Потрачено ккал: {calories:.3f}.')
+        return TEMPLATE.format(**asdict(self))
 
 
 class Training:
@@ -121,9 +121,8 @@ def read_package(workout_type: str, data: list) -> Training:
     if workout_type in workout_types:
         training_type: Training = workout_types[workout_type](*data)
         return training_type
-    else:
-        print(f'Ошибка. Тренировка {workout_type} не найдена.')
-        return None
+    print(f'Ошибка. Тренировка {workout_type} не найдена.')
+    return
 
 
 def main(training: Training) -> None:
