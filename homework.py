@@ -113,7 +113,7 @@ class Swimming(Training):
                 * self.duration)
 
 
-def read_package(workout_type: str, data: list) -> Training:
+def read_package(workout_type: str, data: list[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
     workout_types: dict[str, Type[Training]] = {'SWM': Swimming,
                                                 'RUN': Running,
@@ -122,7 +122,6 @@ def read_package(workout_type: str, data: list) -> Training:
         training_type: Training = workout_types[workout_type](*data)
         return training_type
     print(f'Ошибка. Тренировка {workout_type} не найдена.')
-    return
 
 
 def main(training: Training) -> None:
